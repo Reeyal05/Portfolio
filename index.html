@@ -209,6 +209,152 @@
     }
 
     /* ============================================================
+       PROFILE PICTURE — overlaid on top-right of hero photo
+       ============================================================ */
+    .hero-profile {
+      position: absolute;
+      top: 2.5rem;
+      right: 3rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-profile-ring {
+      width: 310px;
+      height: 400px;
+      border-radius: 0;
+      padding: 4px;
+      background: linear-gradient(160deg, var(--green-light), var(--green));
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .hero-profile-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      object-fit: cover;
+      object-position: center top;
+      background: linear-gradient(160deg, #1a2e1e, #2d6a4f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* placeholder silhouette shown when no image is set */
+    .hero-profile-img.placeholder {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .hero-profile-img.placeholder svg {
+      width: 70%;
+      height: 80%;
+      opacity: 0.55;
+    }
+    .hero-profile-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.35);
+      padding: 0.25rem 0.9rem;
+      border-radius: 20px;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       INTRODUCTION — section right below the hero photo
+       ============================================================ */
+    #intro {
+      background: var(--white);
+      padding: 5rem 2rem 4rem;
+    }
+    .intro-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .intro-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .intro-greeting {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--green-light);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .intro-greeting::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--green-light);
+    }
+    .intro-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .intro-heading span {
+      color: var(--green);
+    }
+    .intro-right p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.95;
+      margin-bottom: 1.2rem;
+    }
+    .intro-right p:last-child { margin-bottom: 0; }
+    .intro-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 2rem;
+      padding: 0.85rem 2rem;
+      background: var(--green);
+      color: var(--white);
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .intro-cta:hover {
+      background: var(--green-mid);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 820px) {
+      .hero-profile {
+        top: 1.5rem;
+        right: 1.5rem;
+      }
+      .hero-profile-ring {
+        width: 110px;
+        height: 150px;
+      }
+      .intro-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    /* ============================================================
        SECTION SHARED
        ============================================================ */
     section { padding: var(--section-pad); }
@@ -314,6 +460,7 @@
     .project-card:nth-child(1) .project-img { background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); }
     .project-card:nth-child(2) .project-img { background: linear-gradient(135deg,#1a2e1e,#2d6a4f,#52b788); }
     .project-card:nth-child(3) .project-img { background: linear-gradient(135deg,#1b1b2f,#16213e,#2d6a4f); }
+    .project-card:nth-child(4) .project-img { background: linear-gradient(135deg,#2e1a1a,#6a2d2d,#b75252); }
     .project-body { padding: 1.5rem; }
     .project-tag { font-family: var(--font-mono); font-size: 0.67rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-light); margin-bottom: 0.4rem; display: block; }
     .project-name { font-family: var(--font-display); font-size: 1.28rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.55rem; line-height: 1.2; }
@@ -447,24 +594,68 @@
     <div class="hero-photo">
       <!-- Your bark photo is embedded below — no internet needed -->
       <img id="bark-img" src="" alt="Wood bark background" />
+
+      <!-- ★ PROFILE PICTURE — overlaid top-right of the bark photo -->
+      <div class="hero-profile">
+        <div class="hero-profile-ring">
+          <!--
+            TO USE YOUR PHOTO:
+            Replace the placeholder div below with:
+            <img class="hero-profile-img" src="your-photo.jpg" alt="Reeyal Singh Oinam" />
+            OR set it via JS (see bottom of file).
+          -->
+          <div class="hero-profile-img placeholder" id="profile-img-wrap">
+            <!-- Silhouette placeholder -->
+            <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="40" cy="30" rx="22" ry="22" fill="rgba(255,255,255,0.4)"/>
+              <path d="M4 95 C4 68 76 68 76 95" fill="rgba(255,255,255,0.4)"/>
+            </svg>
+          </div>
+        </div>
+        <span class="hero-profile-label">Reeyal Singh Oinam</span>
+      </div>
     </div>
 
+  </section>
+
+  <!-- INTRODUCTION -->
+  <section id="intro">
+    <div class="intro-inner fade-in">
+      <div class="intro-left">
+        <p class="intro-greeting">Hello, I'm</p>
+        <h2 class="intro-heading">Reeyal Singh<br><span>Oinam</span></h2>
+      </div>
+      <div class="intro-right">
+        <!-- CHANGE: your introduction text below -->
+        <p>
+          I'm a passionate engineer working at the intersection of <strong>robotics</strong> and <strong>artificial intelligence</strong>. I design intelligent systems that perceive, reason, and act — from embedded control loops to large-scale ML pipelines.
+        </p>
+        <p>
+          My work spans real-time perception, motion planning, and AI-powered automation. I love building things that make a meaningful impact, and I'm always looking for the next challenge that pushes the boundaries of what machines can do.
+        </p>
+        <a href="#about" class="intro-cta">
+          More About Me →
+        </a>
+      </div>
+    </div>
   </section>
 
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-inner">
       <p class="section-label fade-in">Selected Work</p>
-      <h2 class="section-title fade-in">Projects</h2>
+      <h2 class="section-title fade-in">Projects/ Patents</h2>
       <div class="projects-grid">
 
         <!-- CHANGE: duplicate or remove project cards as needed -->
         <div class="project-card fade-in">
-          <div class="project-img">PROJECT IMAGE</div>
+          <div class="project-img">
+             <img src="Screenshot 2025-08-03 110203.png" alt="Smart Pill Dispenser" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
           <div class="project-body">
-            <span class="project-tag">Robotics · ROS 2</span>
+            <span class="project-tag">Electrical · Raspberry Pi · 3D Blender</span>
             <h3 class="project-name">Smart Pill Dispenser</h3>
-            <p class="project-desc">Differential-drive robot with SLAM and a custom obstacle avoidance stack built on ROS 2 and Jetson Nano.</p>
+            <p class="project-desc">Smart pill dispenser with facial recognition, automated medicine dispensing, and medication logging using embedded systems and computer vision.</p>
             <div class="project-links">
               <a href="#" class="proj-link">→ GitHub</a>
               <a href="#" class="proj-link">→ Demo</a>
@@ -473,11 +664,13 @@
         </div>
 
         <div class="project-card fade-in">
-          <div class="project-img">PROJECT IMAGE</div>
+          <div class="project-img">
+            <img src="Road Maintenance System.jpeg" alt="Road Maintenance System" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
           <div class="project-body">
             <span class="project-tag">Computer Vision · PyTorch</span>
-            <h3 class="project-name">Real-Time Object Tracker</h3>
-            <p class="project-desc">Multi-object tracking pipeline with a custom transformer backbone, 45 FPS on edge hardware, 92% mAP.</p>
+            <h3 class="project-name">Road Maintenance System</h3>
+            <p class="project-desc">Patented autonomous road maintenance system capable of detecting potholes and subsurface damage using millimetre-wave radar, thermal imaging, and a sensor array — with onboard repair units for real-time road restoration.</p>
             <div class="project-links">
               <a href="#" class="proj-link">→ GitHub</a>
               <a href="#" class="proj-link">→ Paper</a>
@@ -486,14 +679,36 @@
         </div>
 
         <div class="project-card fade-in">
-          <div class="project-img">PROJECT IMAGE</div>
+          <div class="project-img">
+             <img src="WhatsApp Image 2026-01-20 at 12.34.55.jpeg" alt="Integrated Hand Rehabilitation Device" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
           <div class="project-body">
-            <span class="project-tag">AI · NLP</span>
-            <h3 class="project-name">Robotic Process Advisor</h3>
-            <p class="project-desc">LLM-powered assistant that interprets sensor logs and recommends maintenance actions for industrial robot arms.</p>
+            <span class="project-tag">AI · Computer Vision · Actuation Systems</span>
+            <h3 class="project-name">Integrated Hand Rehabilitation Device</h3>
+            <p class="project-desc">Patented smart rehabilitation glove that uses linear actuators, pin-joint finger segments, and an imaging unit to assist hand movement, optimise grip force, and detect harmful postures — alerting users in real time to prevent strain.</p>
             <div class="project-links">
               <a href="#" class="proj-link">→ GitHub</a>
               <a href="#" class="proj-link">→ Case Study</a>
+            </div>
+          </div>
+
+
+          
+        </div>
+
+        <!-- CHANGE: fill in your new project details below -->
+        <div class="project-card fade-in">
+          <div class="project-img">
+            <!-- Replace 'your-image.jpg' with your project image filename -->
+            <img src="house_price_download.jpg" alt="House Predction" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
+          <div class="project-body">
+            <span class="project-tag">Machine Learning · Skill 2 · Skill 3</span>
+            <h3 class="project-name">House Prediction System</h3>
+            <p class="project-desc">A machine learning project that predicts house prices in Faridabad using 10,000 synthetic property records, comparing Random Forest, Lasso, and Linear Regression models to find the most accurate estimator.</p>
+            <div class="project-links">
+              <a href="#" class="proj-link">→ GitHub</a>
+              <a href="#" class="proj-link">→ Demo</a>
             </div>
           </div>
         </div>
@@ -502,23 +717,23 @@
     </div>
   </section>
 
-  <!-- EXPERIENCE -->
+  <!-- Skills-->
   <section id="experience">
     <div class="section-inner">
       <p class="section-label fade-in">Career</p>
-      <h2 class="section-title fade-in">Experience</h2>
+      <h2 class="section-title fade-in">Skills/Competitions</h2>
       <div class="timeline fade-in">
         <!-- CHANGE: edit/add timeline items -->
         <div class="timeline-item">
-          <p class="tl-date">Jan 2024 – Present</p>
-          <h3 class="tl-role">Robotics Software Engineer</h3>
-          <p class="tl-company">Company Name · New Delhi, India</p>
-          <p class="tl-desc">Developed perception and motion-planning modules for warehouse AMRs. Reduced localization error by 35% through sensor-fusion improvements.</p>
+         <!-- <p class="tl-date">Jan 2026</p>-->
+          <h3 class="tl-role">3rd in Skill India State Level</h3>
+          <p class="tl-company">Indutry 4.0</p>
+          <p class="tl-desc">PLC-based industrial automation project using ladder logic to control conveyor systems and automated processes during the Skill India State Level Competition.</p>
         </div>
         <div class="timeline-item">
-          <p class="tl-date">Jun 2022 – Dec 2023</p>
-          <h3 class="tl-role">ML Research Intern</h3>
-          <p class="tl-company">Research Lab · IIT Delhi</p>
+         <!-- <p class="tl-date">Jun 2022 – Dec 2023</p>-->
+          <h3 class="tl-role">Top 10 in Google Cloud x Manav Rachna Hackathon</h3>
+          <p class="tl-company">Pill Dispensor</p>
           <p class="tl-desc">Trained and deployed reinforcement learning agents for robotic manipulation tasks; co-authored two conference papers.</p>
         </div>
         <div class="timeline-item">
@@ -601,6 +816,15 @@
     // TO USE YOUR OWN PHOTO FILE: place it next to this HTML as "bark.jpg"
     // and uncomment the line below (remove the base64 src assignment).
     // docum// bark image is embedded below as base64
+
+    // === PROFILE PHOTO ===
+    // To set your profile picture, uncomment the line below and replace 'your-photo.jpg'
+    // with your image file path (place the photo next to this HTML file):
+    //
+       document.getElementById('profile-img-wrap').innerHTML = '<img class="hero-profile-img" src="profile pic.jpeg" alt="Reeyal Singh Oinam" />';
+    //
+    // Or use a base64 string:
+    //   document.getElementById('profile-img-wrap').innerHTML = '<img class="hero-profile-img" src="data:image/jpeg;base64,YOUR_BASE64..." alt="Reeyal Singh Oinam" />';
 
     // Nav style change on scroll
     const navbar = document.getElementById('navbar');
